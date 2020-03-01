@@ -13,7 +13,7 @@ var client = http.Client{
 	Timeout: time.Duration(5 * time.Second),
 }
 
-func getUserInfo(userId int) userInfo {
+func getUserInfo(userId int, c chan userInfo) {
 	// ToDo: Better Concatenation?
 	resp, httpCallError := client.Get(UserInfoBaseUrl + strconv.Itoa(userId))
 	handleError(httpCallError)
@@ -25,10 +25,10 @@ func getUserInfo(userId int) userInfo {
 	unmarshalError := json.Unmarshal(body, &userInfo)
 	handleError(unmarshalError)
 
-	return userInfo
+	c <- userInfo
 }
 
-func getUserComments(userId int) []comment {
+func getUserComments(userId int, c chan []comment) {
 	//ToDo: Pass query parameter differently?
 	resp, err := client.Get(UserCommentsBaseUrl + strconv.Itoa(userId))
 	handleError(err)
@@ -40,7 +40,7 @@ func getUserComments(userId int) []comment {
 	unmarshalError := json.Unmarshal(body, &comments)
 	handleError(unmarshalError)
 
-	return comments
+	c <- comments
 }
 
 func handleError(err error) {

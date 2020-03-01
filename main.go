@@ -54,7 +54,13 @@ type userFullInfo struct {
 }
 
 func main() {
-	response := userFullInfo{getUserInfo(1), getUserComments(1)}
+	i := 1
+	c := make(chan userInfo)
+	cc := make(chan []comment)
+	go getUserInfo(i, c)
+	go getUserComments(i, cc)
+
+	var response = userFullInfo{<-c, <-cc}
 	fmt.Println(response)
 
 	//ToDO: Server Stuff, temporaryly disabled
