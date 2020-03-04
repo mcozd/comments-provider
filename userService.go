@@ -15,7 +15,6 @@ const UserInfoBaseUrl = "https://jsonplaceholder.typicode.com/users/"
 //Example: https://jsonplaceholder.typicode.com/posts?userId=1
 const UserCommentsBaseUrl = "https://jsonplaceholder.typicode.com/posts?userId="
 
-// ToDo: Too high?
 const TimeoutSeconds = 5
 
 var client = http.Client{
@@ -23,7 +22,6 @@ var client = http.Client{
 }
 
 func getUserInfo(userId int, c chan userInfo) {
-	// ToDo: Better Concatenation?
 	resp, httpCallError := client.Get(UserInfoBaseUrl + strconv.Itoa(userId))
 	handleError(httpCallError)
 
@@ -38,7 +36,6 @@ func getUserInfo(userId int, c chan userInfo) {
 }
 
 func getUserComments(userId int, c chan []comment) {
-	//ToDo: Pass query parameter differently?
 	resp, err := client.Get(UserCommentsBaseUrl + strconv.Itoa(userId))
 	handleError(err)
 
@@ -54,7 +51,6 @@ func getUserComments(userId int, c chan []comment) {
 
 func handleError(err error) {
 	if err != nil {
-		// ToDo: Do Something Better?
 		log.Fatal(err)
 	}
 }
