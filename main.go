@@ -1,15 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
+	"log"
+	"net/http"
+	"strconv"
+	"strings"
+	_ "strings"
 )
 
-//Example: https://jsonplaceholder.typicode.com/users/1
-const UserInfoBaseUrl = "https://jsonplaceholder.typicode.com/users/"
+const ServerPort = 8080
 
-//Example: https://jsonplaceholder.typicode.com/posts?userId=1
-const UserCommentsBaseUrl = "https://jsonplaceholder.typicode.com/posts?userId="
-
+//ToDo: Already used in golang pkg net/url !?
 type userInfo struct {
 	Id       int     `json:"id"`
 	Username string  `json:"username"`
@@ -20,7 +22,7 @@ type userInfo struct {
 	Company  company `json:"company"`
 }
 
-//ToDo: Annahme, dass alle Infos interessieren
+//ToDo: assumption every field is important
 type address struct {
 	Street  string `json:"street"`
 	Suite   string `json:"suite"`
@@ -54,18 +56,29 @@ type userFullInfo struct {
 }
 
 func main() {
-	i := 1
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+
+		userId := parseId(r)
+		user := collectUserFullInfo(userId)
+		err := json.NewEncoder(w).Encode(user)
+
+		handleError(err)
+	})
+	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(ServerPort), nil))
+}
+
+func parseId(r *http.Request) int {
+	//ToDo: Be more robust?
+	path := strings.Split(r.URL.Path, "/")
+	userId, _ := strconv.Atoi(path[1])
+	return userId
+}
+
+func collectUserFullInfo(userId int) userFullInfo {
 	c := make(chan userInfo)
 	cc := make(chan []comment)
-	go getUserInfo(i, c)
-	go getUserComments(i, cc)
+	go getUserInfo(userId, c)
+	go getUserComments(userId, cc)
 
-	var response = userFullInfo{<-c, <-cc}
-	fmt.Println(response)
-
-	//ToDO: Server Stuff, temporaryly disabled
-	//http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	//	fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
-	//})
-	//log.Fatal(http.ListenAndServe(":8080", nil))
+	return userFullInfo{<-c, <-cc}
 }

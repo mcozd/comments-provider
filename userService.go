@@ -9,8 +9,17 @@ import (
 	"time"
 )
 
+//Example: https://jsonplaceholder.typicode.com/users/1
+const UserInfoBaseUrl = "https://jsonplaceholder.typicode.com/users/"
+
+//Example: https://jsonplaceholder.typicode.com/posts?userId=1
+const UserCommentsBaseUrl = "https://jsonplaceholder.typicode.com/posts?userId="
+
+// ToDo: Too high?
+const TimeoutSeconds = 5
+
 var client = http.Client{
-	Timeout: time.Duration(5 * time.Second),
+	Timeout: time.Duration(TimeoutSeconds * time.Second),
 }
 
 func getUserInfo(userId int, c chan userInfo) {
