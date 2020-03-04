@@ -7,16 +7,9 @@ import (
 	"strings"
 )
 
-func UserFullInfoHandler(w http.ResponseWriter, r *http.Request) {
-	userId := parseId(r)
-	user := collectUserFullInfo(userId)
-	err := json.NewEncoder(w).Encode(user)
-	handleError(err)
-}
-
 func parseId(r *http.Request) int {
 	path := strings.Split(r.URL.Path, "/")
-	userId, _ := strconv.Atoi(path[1])
+	userId, _ := strconv.Atoi(path[2])
 	return userId
 }
 
@@ -27,4 +20,11 @@ func collectUserFullInfo(userId int) userFullInfo {
 	go getUserComments(userId, cc)
 
 	return userFullInfo{<-c, <-cc}
+}
+
+func UserFullInfoHandler(w http.ResponseWriter, r *http.Request) {
+	userId := parseId(r)
+	user := collectUserFullInfo(userId)
+	err := json.NewEncoder(w).Encode(user)
+	handleError(err)
 }
