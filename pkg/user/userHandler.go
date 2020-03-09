@@ -1,11 +1,10 @@
-package main
+package user
 
 import (
 	"encoding/json"
 	"net/http"
 	"strconv"
 	"strings"
-
 )
 
 func parseID(r *http.Request) int {
