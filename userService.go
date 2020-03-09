@@ -7,18 +7,19 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+
 )
 
 //Example: https://jsonplaceholder.typicode.com/users/1
-const UserInfoBaseUrl = "https://jsonplaceholder.typicode.com/users/"
+const UserInfoBaseURL = "https://jsonplaceholder.typicode.com/users/"
 
 //Example: https://jsonplaceholder.typicode.com/posts?userId=1
-const UserCommentsBaseUrl = "https://jsonplaceholder.typicode.com/posts?userId="
+const UserCommentsBaseURL = "https://jsonplaceholder.typicode.com/posts?userId="
 
-const TimeoutSeconds = 5
+const timeoutSeconds = 5
 
 var client = http.Client{
-	Timeout: time.Duration(TimeoutSeconds * time.Second),
+	Timeout: time.Duration(timeoutSeconds * time.Second),
 }
 
 func getUserInfo(userId int, c chan userInfo) {
