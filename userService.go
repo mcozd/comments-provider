@@ -22,8 +22,8 @@ var client = http.Client{
 	Timeout: time.Duration(timeoutSeconds * time.Second),
 }
 
-func getUserInfo(userId int, c chan userInfo) {
-	resp, httpCallError := client.Get(UserInfoBaseUrl + strconv.Itoa(userId))
+func getUserInfo(userID int, c chan userInfo) {
+	resp, httpCallError := client.Get(UserInfoBaseURL + strconv.Itoa(userID))
 	handleError(httpCallError)
 
 	body, readError := ioutil.ReadAll(resp.Body)
@@ -36,8 +36,8 @@ func getUserInfo(userId int, c chan userInfo) {
 	c <- userInfo
 }
 
-func getUserComments(userId int, c chan []comment) {
-	resp, err := client.Get(UserCommentsBaseUrl + strconv.Itoa(userId))
+func getUserComments(userID int, c chan []comment) {
+	resp, err := client.Get(UserCommentsBaseURL + strconv.Itoa(userID))
 	handleError(err)
 
 	body, readError := ioutil.ReadAll(resp.Body)
