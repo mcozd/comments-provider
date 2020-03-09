@@ -1,4 +1,4 @@
-package main
+package user
 
 import (
 	"encoding/json"
@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-
 )
 
 //Example: https://jsonplaceholder.typicode.com/users/1
