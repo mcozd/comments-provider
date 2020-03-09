@@ -1,7 +1,7 @@
 package main
 
 type userInfo struct {
-	Id       int     `json:"id"`
+	ID       int     `json:"id"`
 	Username string  `json:"username"`
 	Email    string  `json:"email"`
 	Address  address `json:"address"`
@@ -30,8 +30,8 @@ type company struct {
 }
 
 type comment struct {
-	UserId int    `json:"userId"`
-	Id     int    `json:"Id"`
+	UserID int    `json:"userId"`
+	ID     int    `json:"Id"`
 	Title  string `json:"title"`
 	Body   string `json:"body"`
 }
