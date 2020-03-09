@@ -1,6 +1,7 @@
 package main
 
 import (
+	ownUser "comments-provider/pkg/user"
 	"log"
 	"net/http"
 	"strconv"
@@ -11,6 +12,6 @@ import (
 const serverPort = 8080
 
 func main() {
-	http.HandleFunc("/user/", UserFullInfoHandler)
+	http.HandleFunc("/user/", ownUser.UserFullInfoHandler)
 	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(serverPort), nil))
 }
