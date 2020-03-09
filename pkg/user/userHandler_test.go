@@ -10,7 +10,7 @@ import (
 var _ = Describe("Testing with Ginkgo", func() {
 	It("user full info handler is successful", func() {
 
-		req, err := http.NewRequest("GET", "/user/1", nil)
+		req, err := http.NewRequest("GET", "/users/1", nil)
 		if err != nil {
 			GinkgoT().Fatal(err)
 		}
