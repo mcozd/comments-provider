@@ -13,10 +13,11 @@ const serverPort = 8080
 
 func main() {
 	http.HandleFunc("/users/", ownUser.UserFullInfoHandler)
-	error := http.ListenAndServe(":"+strconv.Itoa(serverPort), nil)
-	if error != nil {
-		log.Fatal(error)
+	startupError := http.ListenAndServe(":"+strconv.Itoa(serverPort), nil)
+
+	if startupError != nil {
+		log.Fatal(startupError)
 	} else {
-		println("Server started successfully on port:" + strconv.Itoa(serverPort))
+		log.Printf("Server started successfully on port: %s", strconv.Itoa(serverPort))
 	}
 }
