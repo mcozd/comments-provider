@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-func parseID(r *http.Request) int {
-	path := strings.Split(r.URL.Path, "/")
+func parseID(fullPath string) int {
+	path := strings.Split(fullPath, "/")
 	userID, _ := strconv.Atoi(path[2])
 	return userID
 }
@@ -23,7 +23,7 @@ func collectUserFullInfo(userID int) userFullInfo {
 }
 
 func UserFullInfoHandler(w http.ResponseWriter, r *http.Request) {
-	userID := parseID(r)
+	userID := parseID(r.URL.Path)
 	user := collectUserFullInfo(userID)
 	err := json.NewEncoder(w).Encode(user)
 	handleError(err)
